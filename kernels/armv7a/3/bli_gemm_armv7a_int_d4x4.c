@@ -455,45 +455,70 @@ void bli_dgemm_armv7a_int_4x4
 		bp += 4;
 	}
 
-	*c00 = *c00 * *beta;
-	*c10 = *c10 * *beta;
-	*c20 = *c20 * *beta;
-	*c30 = *c30 * *beta;
+    if ( *beta == 0.0 )
+    {
+    	*c00 = ab00 * *alpha;
+    	*c10 = ab10 * *alpha;
+    	*c20 = ab20 * *alpha;
+    	*c30 = ab30 * *alpha;
 
-	*c01 = *c01 * *beta;
-	*c11 = *c11 * *beta;
-	*c21 = *c21 * *beta;
-	*c31 = *c31 * *beta;
+    	*c01 = ab01 * *alpha;
+    	*c11 = ab11 * *alpha;
+    	*c21 = ab21 * *alpha;
+    	*c31 = ab31 * *alpha;
 
-	*c02 = *c02 * *beta;
-	*c12 = *c12 * *beta;
-	*c22 = *c22 * *beta;
-	*c32 = *c32 * *beta;
+    	*c02 = ab02 * *alpha;
+    	*c12 = ab12 * *alpha;
+    	*c22 = ab22 * *alpha;
+    	*c32 = ab32 * *alpha;
 
-	*c03 = *c03 * *beta;
-	*c13 = *c13 * *beta;
-	*c23 = *c23 * *beta;
-	*c33 = *c33 * *beta;
+    	*c03 = ab03 * *alpha;
+    	*c13 = ab13 * *alpha;
+    	*c23 = ab23 * *alpha;
+    	*c33 = ab33 * *alpha;
+    }
+    else
+    {
+    	*c00 = *c00 * *beta;
+    	*c10 = *c10 * *beta;
+    	*c20 = *c20 * *beta;
+    	*c30 = *c30 * *beta;
 
-	*c00 += ab00 * *alpha;
-	*c10 += ab10 * *alpha;
-	*c20 += ab20 * *alpha;
-	*c30 += ab30 * *alpha;
+    	*c01 = *c01 * *beta;
+    	*c11 = *c11 * *beta;
+    	*c21 = *c21 * *beta;
+    	*c31 = *c31 * *beta;
 
-	*c01 += ab01 * *alpha;
-	*c11 += ab11 * *alpha;
-	*c21 += ab21 * *alpha;
-	*c31 += ab31 * *alpha;
+    	*c02 = *c02 * *beta;
+    	*c12 = *c12 * *beta;
+    	*c22 = *c22 * *beta;
+    	*c32 = *c32 * *beta;
 
-	*c02 += ab02 * *alpha;
-	*c12 += ab12 * *alpha;
-	*c22 += ab22 * *alpha;
-	*c32 += ab32 * *alpha;
+    	*c03 = *c03 * *beta;
+    	*c13 = *c13 * *beta;
+    	*c23 = *c23 * *beta;
+    	*c33 = *c33 * *beta;
 
-	*c03 += ab03 * *alpha;
-	*c13 += ab13 * *alpha;
-	*c23 += ab23 * *alpha;
-	*c33 += ab33 * *alpha;
+    	*c00 += ab00 * *alpha;
+    	*c10 += ab10 * *alpha;
+    	*c20 += ab20 * *alpha;
+    	*c30 += ab30 * *alpha;
+
+    	*c01 += ab01 * *alpha;
+    	*c11 += ab11 * *alpha;
+    	*c21 += ab21 * *alpha;
+    	*c31 += ab31 * *alpha;
+
+    	*c02 += ab02 * *alpha;
+    	*c12 += ab12 * *alpha;
+    	*c22 += ab22 * *alpha;
+    	*c32 += ab32 * *alpha;
+
+    	*c03 += ab03 * *alpha;
+    	*c13 += ab13 * *alpha;
+    	*c23 += ab23 * *alpha;
+    	*c33 += ab33 * *alpha;
+    }
 
     GEMM_UKR_FLUSH_CT( d );
 }
