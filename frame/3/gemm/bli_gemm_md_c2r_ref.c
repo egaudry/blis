@@ -64,6 +64,9 @@ void PASTEMAC2(ch,opname,suf) \
 	const dim_t       mr        = bli_cntx_get_blksz_def_dt( dt, BLIS_MR, cntx ); \
 	const dim_t       nr        = bli_cntx_get_blksz_def_dt( dt, BLIS_NR, cntx ); \
 \
+	dim_t             mr_r = mr; \
+	dim_t             nr_r = nr; \
+\
 	ctype             ct[ BLIS_STACK_BUF_MAX_SIZE \
 	                      / sizeof( ctype_r ) ] \
 	                      __attribute__((aligned(BLIS_STACK_BUF_ALIGN_SIZE))); \
@@ -83,6 +86,9 @@ void PASTEMAC2(ch,opname,suf) \
 \
 	ctype_r* restrict beta_r    = &PASTEMAC(ch,real)( *beta ); \
 	ctype_r* restrict beta_i    = &PASTEMAC(ch,imag)( *beta ); \
+\
+	dim_t             m_use; \
+	dim_t             n_use; \
 \
 	ctype_r*          c_use; \
 	inc_t             rs_c_use; \
@@ -152,15 +158,14 @@ PASTEMAC(chr,fprintm)( stdout, "gemm_ukr: c before", mr, nr, \
 		   be in units of real elements. Note that we don't need to check for
 		   general storage here because that case corresponds to the scenario
 		   where we are using the ct buffer and its rs_ct/cs_ct strides. */ \
-		if ( bli_is_col_stored( rs_c_use, cs_c_use ) ) cs_c_use *= 2; \
-		else                                           rs_c_use *= 2; \
-\
+		if ( bli_is_col_stored( rs_c_use, cs_c_use ) ) { cs_c_use *= 2; mr_r *= 2; } \
+		else                                           { rs_c_use *= 2; nr_r *= 2; }\
 \
 		/* c = beta * c + alpha_r * a * b; */ \
 		rgemm_ukr \
 		( \
-          mr, \
-          nr, \
+          mr_r, \
+          nr_r, \
 		  k, \
 		  alpha_r, \
 		  a_r, \
@@ -211,19 +216,21 @@ PASTEMAC(chr,fprintm)( stdout, "gemm_ukr: c before", mr, nr, \
 		c_use    = ( ctype_r* )c; \
 		rs_c_use = rs_c; \
 		cs_c_use = cs_c; \
+		m_use = m; \
+		n_use = n; \
 \
 		/* Convert the strides from being in units of complex elements to
 		   be in units of real elements. Note that we don't need to check for
 		   general storage here because that case corresponds to the scenario
 		   where we are using the ct buffer and its rs_ct/cs_ct strides. */ \
-		if ( bli_is_col_stored( rs_c_use, cs_c_use ) ) cs_c_use *= 2; \
-		else                                           rs_c_use *= 2; \
+		if ( bli_is_col_stored( rs_c_use, cs_c_use ) ) { cs_c_use *= 2; m_use *= 2; } \
+		else                                           { rs_c_use *= 2; n_use *= 2; } \
 \
 		/* c = beta * c + alpha_r * a * b; */ \
 		rgemm_ukr \
 		( \
-          m, \
-          n, \
+          m_use, \
+          n_use, \
 		  k, \
 		  alpha_r, \
 		  a_r, \

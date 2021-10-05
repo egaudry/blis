@@ -99,8 +99,6 @@ void PASTEMAC(ch,varname) \
        thrinfo_t* thread  \
      );
 
-INSERT_GENTPROT_BASIC0( gemm_ker_var2 )
-
 // Headers for induced algorithms:
 INSERT_GENTPROT_BASIC0( gemm4mb_ker_var2 ) // 4m1b
 
