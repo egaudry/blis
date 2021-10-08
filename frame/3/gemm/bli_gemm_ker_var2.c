@@ -44,8 +44,6 @@ typedef void (*xpbys_mxn_vft)
       void* y, inc_t rs_y, inc_t cs_y
     );
 
-#undef GENTFUNC
-#define GENTFUNC(ctype,ch,op) GENTFUNC2(ctype,ctype,ch,ch,op)
 #undef GENTFUNC2
 #define GENTFUNC2(ctypex,ctypey,chx,chy,op) \
 void PASTEMAC2(chx,chy,op) \
@@ -70,7 +68,7 @@ void PASTEMAC2(chx,chy,op) \
 	); \
 }
 
-INSERT_GENTFUNC_BASIC0(xbpys_mxn_fn);
+INSERT_GENTFUNC2_BASIC0(xbpys_mxn_fn);
 INSERT_GENTFUNC2_MIXDP0(xbpys_mxn_fn);
 
 static xpbys_mxn_vft GENARRAY2_ALL(xbpys_mxn, xbpys_mxn_fn);
