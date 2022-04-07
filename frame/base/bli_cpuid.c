@@ -1131,6 +1131,10 @@ static uint32_t get_coretype
 				case 0xd0c: // Neoverse N1 (and Graviton G2?)
 					return BLIS_ARCH_THUNDERX2; //placeholder for N1
 #endif
+#ifdef BLIS_CONFIG_NEOVERSEV1
+				case 0xd40: // Neoverse V1 (and Graviton G3?)
+					return BLIS_ARCH_NEOVERSEV1;
+#endif
 			}
 			break;
 		case 0x42:		// Broadcom

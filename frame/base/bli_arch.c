@@ -194,6 +194,9 @@ void bli_arch_set_id( void )
 		#endif
 
 		// ARM microarchitectures.
+		#ifdef BLIS_FAMILY_NEOVERSEV1
+		id = BLIS_ARCH_NEOVERSEV1;
+		#endif
 		#ifdef BLIS_FAMILY_ARMSVE
 		id = BLIS_ARCH_ARMSVE;
 		#endif
@@ -270,6 +273,7 @@ static char* config_name[ BLIS_NUM_ARCHS ] =
     "piledriver",
     "bulldozer",
 
+    "neoversev1",
     "armsve",
     "a64fx",
     "firestorm",
